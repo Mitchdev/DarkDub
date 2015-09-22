@@ -1,12 +1,17 @@
 //For any informations, please go to https://github.com/WiBla/FCS/
 
-if(!$("#fcs-style.css")[0]) {
-	var version = "Alpha 0.1";
+if(!$("#fcs-css")[0]) {
+	var version = "Alpha 0.2";
   // Initating custom css
 	var css = "https://rawgit.com/WiBla/FCS/master/ressources/style.css";
-	$("head").append($("<link id='fcs-style.css' rel='stylesheet' type='text/css' href='"+css+"'>"));
+	$("head").append($("<link id='fcs-css' rel='stylesheet' type='text/css' href='"+css+"'>"));
+	// Auto-Vote
+	var woot = $(".dubup");
+	var uInt = setInterval(function() {
+		if (!woot.hasClass("voted")) woot.click();
+	}, 5000)
 	// Chat "log" loading complete
-	var loadedLog = $('<li class="user-55ffc26f1564a403003f527e">\
+	var loadedLog = $('<li class="fcs-log user-55ffc26f1564a403003f527e">\
 		<div class="stream-item-content">\
 			<div class="image_row">\
 				<img src="https://api.dubtrack.fm/user/55ffc26f1564a403003f527e/image" alt="wibla" onclick="Dubtrack.helpers.displayUser(\'55ffc26f1564a403003f527e\', this);" class="cursor-pointer" onerror="Dubtrack.helpers.image.imageError(this);">\
@@ -18,7 +23,7 @@ if(!$("#fcs-style.css")[0]) {
 				<span class="username">wibla </span>\
 				<i class="icon-dot"></i>\
 				<span class="timeinfo">\
-					<time class="timeago" datetime="2015-09-22T10:30:35.825Z" title="22/9/2015 12:30:35">1 minutes ago</time>\
+					<time class="timeago" datetime="unedfined" title="undefined"><a href="http://wibla.free.fr">http://wibla.free.fr</a></time>\
 				</span>\
 			</div></div></div></li>');
 	$("#chat .chat-container .chat-main").append(loadedLog);
