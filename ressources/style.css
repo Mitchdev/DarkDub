@@ -1,0 +1,21 @@
+/*
+  For the moment, this is the custom theme css,
+  when the script is ready, script's css and theme will be separated.
+*/
+
+#chat .user-55ffc26f1564a403003f527e .username {
+    color: hsl(200,80%,50%) !important;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+#chat li {
+    box-shadow: inset 1px 1px 0 hsla(0,0%,0%,0.5);
+    background: linear-gradient(hsla(0,0%,0%,0.2), hsla(0,0%,0%,0.1));
+}
+#chat li:nth-child(even) {
+    box-shadow: inset 1px 1px 0 hsla(0,0%,100%,0.1);
+    background: linear-gradient(hsla(0,0%,100%,0.1), hsla(0,0%,100%,0.05));
+}
+#chat .system {
+    background: linear-gradient(hsl(280,80%,30%), hsl(280,80%,20%)) !important;
+}
