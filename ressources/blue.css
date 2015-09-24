@@ -3,16 +3,6 @@
 #chat .system {
 	background: linear-gradient(hsl(280,80%,30%), hsl(280,80%,20%)) !important;
 }
-/* Logs */
-#chat .fcs-log.user-55ffc26f1564a403003f527e {
-	background: linear-gradient(hsla(210,80%,50%,0.2), hsla(210,80%,40%,0.1));
-	box-shadow: inset 0 0 1px hsla(210,80%,50%,1);
-}
-/* ##### [RANKS] #####*/
-#chat .user-55ffc26f1564a403003f527e .username {
-	color: hsl(200,80%,50%) !important;
-	font-weight: bold;
-}
 /* Global ranks */
 ul.avatar-list li.admin:after {background: hsla(10,80%,40%,0.8);}
 ul.avatar-list li.creator:after {background: hsla(220,80%,50%,0.8);}
@@ -67,7 +57,7 @@ button:hover {
 #player-controller .right {
 	color: hsl(90,50%,50%) !important;
 }
-/* ##### [Ohter] #####*/
+/* ##### [Ohter] ##### */
 #chat .chat-container ul.chat-main li .activity-row .text img {
   width: auto;
 }
