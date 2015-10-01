@@ -127,6 +127,9 @@ a.close-menu {
 #container-room-list .room-item {
   text-align: center;
 }
+div#main-loading {
+  background: linear-gradient(hsl(210,80%,50%), hsl(210,80%,40%));
+}
 #header-global h1,
 #main-room #mobile-room-menu,
 .comments-main {
@@ -139,7 +142,8 @@ a.close-menu {
   background: linear-gradient(hsl(220,80%,40%), hsl(220,80%,30%));
 }
 #main-room #mobile-room-menu a.active .info-counter,
-#player-controller ul li a.playbtn:hover .queue-info {
+#player-controller ul li a.playbtn:hover .queue-info,
+#header-global .user-info .user-header-menu li.user-messages:hover span.message-counter {
   background: linear-gradient(to top, hsl(210,10%,10%), hsl(210,10%,5%));
   color: #aaa;
 }
@@ -217,7 +221,8 @@ ul.avatar-list li p.dubs {
 #profileMainSection .profileView .header .pictureContainer a.updatePictureGif,
 #profileMainSection .profileView .infoProfile h2 span.editUsername,
 #profileMainSection .profileView .infoProfile h2 span.saveUsername,
-#profileMainSection .profileView .contentMainProfile span.progress {
+#profileMainSection .profileView .contentMainProfile span.progress,
+#header-global .user-info .user-header-menu li.user-messages span.message-counter {
   background: linear-gradient(hsl(210,80%,40%), hsl(210,80%,30%));
   background-color: transparent !important;
 }
@@ -256,6 +261,9 @@ button:hover {
 #user_popover .actions a {
   color: hsl(210,80%,30%) !important;
 }
+#profileMainSection .profileView .rewindProfile {
+  border-color: hsl(210,80%,40%);
+}
 #user_popover,
 #browser .browser-content,
 #profileMainSection .profileView .header .pictureContainer img {
@@ -266,7 +274,8 @@ button:hover {
 #container-room-list .room-item.userRoom {
   outline-color: hsl(210,80%,40%);
 }
-#container-room-list .room-item .description .name {
+#container-room-list .room-item .description .name,
+#private-messages .main-message-list .message-header a, #private-messages .message-details .message-header a {
   color: hsl(210,60%,50%);
 }
 /* ##### [CYAN replaced to GREEN] #####*/
@@ -275,6 +284,9 @@ button:hover {
 #player-controller ul li a.dubup.voted,
 #main_player .player_container .loading {
   background: linear-gradient(hsl(90,50%,50%), hsl(90,50%,40%));
+}
+ul.avatar-list li.downdub {
+  box-shadow: 0 0 0 1px hsl(0,80%,40%) !important;
 }
 #player-controller .right,
 #chat .username-handle,
@@ -319,6 +331,9 @@ button:hover {
 .add-to-playlist a:hover {
   background: linear-gradient(hsl(260,60%,50%), hsl(260,60%,40%)) !important;
 }
-.dubdown:hover, .dubdown.voted {
-  background: hsl(0,60%,50%) !important;
+.dubdown:hover,
+.dubdown.voted {
+  background: linear-gradient(hsl(0,60%,50%), hsl(0,60%,40%))!important;
 }
+#chat li .ChatDelete {display: none;}
+#chat li:hover .ChatDelete {display: block;}
