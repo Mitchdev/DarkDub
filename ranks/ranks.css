@@ -1,6 +1,37 @@
-.is-Creator {}
-.is-Helpers {}
-.is-Graphist {}
-.is-Bot {}
-.is-VIP {}
-.is-Donators {}
+/* ##### [RANKS] #####*/
+/* Room's ranks */
+.is-Creator {
+	
+}
+.is-Helpers {
+	
+}
+.is-Graphist {
+	
+}
+.is-Bot {
+	
+}
+.is-VIP {
+	
+}
+.is-Donators {
+	
+}
+
+/* VIP's ranks */
+#chat .user-55ffc26f1564a403003f527e .username {
+	/*WiBla*/
+  color: hsl(200,80%,50%) !important;
+  font-weight: bold;
+}
+#chat .user- .username {
+	/*Nomyn*/
+  color: #3589D2 !important;
+  font-weight: bold;
+}
+#chat .user- .username {
+	/*ProDjMx*/
+  color: #C61531 !important;
+  font-weight: bold;
+}
