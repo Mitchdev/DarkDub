@@ -13,7 +13,7 @@
 	
 }
 .is-VIP {
-	
+	font-weight: bold;
 }
 .is-Donators {
 	
@@ -21,32 +21,37 @@
 
 /* VIP's ranks */
 #chat .user-55ffc26f1564a403003f527e .username {
-	/*WiBla*/
+  /*WiBla*/
   color: hsl(200,80%,50%) !important;
   font-weight: bold;
 }
 #chat .user-5600800e239f1303009c90eb .username {
-	/*Zurbo*/
+  /*Zurbo*/
   color: #042 !important;
   font-weight: bold;
 }
 #chat .user-560072ca239f1303009c8edf .username {
-	/*Cyril*/
+  /*Cyril*/
   color: #F03232 !important;
   font-weight: bold;
 }
-#chat .user- .username {
-	/*Nomyn*/
+#chat .user-55ffb4d4196f170300cc0df1 .username {
+  /*Nomyn*/
   color: #3589D2 !important;
   font-weight: bold;
 }
 #chat .user-56006fe7239f1303009c8e6e .username {
-	/*ProDjMx*/
+  /*ProDjMx*/
   color: #C61531 !important;
   font-weight: bold;
 }
 #chat .user-5601b47a6ac261030001e429 .username {
-	/*Elaaps*/
+  /*Elaaps*/
   color: #40F !important;
+  font-weight: bold;
+}
+#chat .user-5600f5ce2d5038030094cb21 .username {
+  /*Reality*/
+  color: #012bfe !important;
   font-weight: bold;
 }

@@ -70,7 +70,7 @@
 /* Special Items */
 #fcs-menu input#importPlaylists {
   position: relative;
-  top: 95px; right: 147px;
+  top: 145px; right: 152px;
   margin: -200px;
   opacity: 0;
   cursor: pointer;
@@ -147,34 +147,3 @@
 #chat .user-55ffc26f1564a403003f527e.fcs-error .username,
 #chat .user-55ffc26f1564a403003f527e.fcs-error a:hover
 {color: hsl(0,60%,50%) !important;}
-/* VIP's ranks */
-#chat .user-55ffc26f1564a403003f527e .username {
-  /*WiBla*/
-  color: hsl(200,80%,50%) !important;
-  font-weight: bold;
-}
-#chat .user-5600800e239f1303009c90eb .username {
-  /*Zurbo*/
-  color: #042 !important;
-  font-weight: bold;
-}
-#chat .user-560072ca239f1303009c8edf .username {
-  /*Cyril*/
-  color: #F03232 !important;
-  font-weight: bold;
-}
-#chat .user- .username {
-  /*Nomyn*/
-  color: #3589D2 !important;
-  font-weight: bold;
-}
-#chat .user-56006fe7239f1303009c8e6e .username {
-  /*ProDjMx*/
-  color: #C61531 !important;
-  font-weight: bold;
-}
-#chat .user-5601b47a6ac261030001e429 .username {
-  /*Elaaps*/
-  color: #40F !important;
-  font-weight: bold;
-}

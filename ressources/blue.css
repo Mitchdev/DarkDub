@@ -240,12 +240,12 @@ button:hover {
 #main-menu-left a:hover {
   color: #fff !important;
 }
-#chat .ChatDelete {
-  top: 10px;
-  color: hsl(210,80%,40%);
+#chat .chatDelete {
+  top: -5px; right: -2px !important;
+  color: hsl(210,10%,60%) !important;
 }
-#chat .ChatDelete:hover {
-  color: hsl(210,10%,80%); /* red */
+#chat .chatDelete:hover {
+  color: hsl(0,80%,40%) !important;
 }
 #main-menu-left a.logout-link:hover,
 .logout button:hover {
@@ -335,5 +335,3 @@ ul.avatar-list li.downdub {
 .dubdown.voted {
   background: linear-gradient(hsl(0,60%,50%), hsl(0,60%,40%))!important;
 }
-#chat li .ChatDelete {display: none;}
-#chat li:hover .ChatDelete {display: block;}

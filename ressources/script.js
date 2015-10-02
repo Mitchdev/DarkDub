@@ -7,8 +7,9 @@
 
 if(!$("#fcs-css")[0]) {
 	var fcs = {
-		"version": "Alpha 0.4",
+		"version": "Alpha 0.5",
 		"menu_css": "https://rawgit.com/WiBla/FCS/master/ressources/menu.css",
+		"ranks_css": "https://rawgit.com/WiBla/FCS/master/ranks/ranks.css",
 		"theme_css": "https://rawgit.com/WiBla/FCS/master/ressources/blue.css",
 		"smallChat_css": "https://rawgit.com/WiBla/FCS/master/ressources/smallChat.css",
 		"settings": {
@@ -16,12 +17,13 @@ if(!$("#fcs-css")[0]) {
 			"theme": false,
 			"smallChat": false,
 			"confirmQuit": false,
+			"customBGURL": ""
 		},
 		"room": {
 			"name": "",
 			"type": "",
 			"url": "",
-			"background": "",
+			"background": $(".backstretch img").attr("src"),
 			"DJ": "",
 			"audience": {}
 		},
@@ -201,6 +203,26 @@ if(!$("#fcs-css")[0]) {
 				fr.readAsText(file);
 			};
 		},
+		"changeBG": function(){
+			// There is room for improvement (customize the prompt, avoid code repetition..)
+			var URL = prompt('URL of the wanted image:\n(Type "default" to reset room\'s background, "none" to have nothing)');
+			if (URL !== null && URL !== "") {
+				URL.toLowerCase();
+				if (URL == "default") {
+					$(".backstretch img").attr("src", fcs.room.background);
+					fcs.paintOrange($("#changeBG"));
+				}
+				else if (URL == "none") {
+					$(".backstretch img").attr("src", "");
+					fcs.paintGreen($("#changeBG"));
+				}
+				else {
+					$(".backstretch img").attr("src", URL);
+					fcs.paintGreen($("#changeBG"));
+					fcs.user.settings.customBGURL = URL;
+				}
+			}
+		},
 		"confirmQuit": function() {
 			if (fcs.user.settings.confirmQuit) {
 				window.onbeforeunload = function(){
@@ -229,6 +251,7 @@ function init(kill) {
 					<li id="autoVote">Auto-Vote</li>\
 					<li id="theme">Theme</li>\
 					<li id="smallChat">Small chat</li>\
+					<li id="changeBG">Change Background</li>\
 					<input id="importPlaylists" type="file">\
 					<li id="importPlaylists">Import Playlist</li>\
 					<li id="confirmQuit">Confirm on quit</li>\
@@ -238,11 +261,7 @@ function init(kill) {
 			</li>'));
 		// Initating custom css
 		$("head").append($("<link id='fcs-css' rel='stylesheet' type='text/css' href='"+fcs.menu_css+"'>"));
-		// Clear chat button
-		$(".chatSound").after(
-			$("<a id='clearChat'>Clear\
-				<img class='emoji' src='https://mediadubtrackfm.s3.amazonaws.com/assets/emoji/images/emoji/no_entry_sign.png' title=':no_entry_sign:' alt=':no_entry_sign:' align='absmiddle'></a>"));
-		$("#clearChat").on("click", function(){$(".chat-main").empty();});
+		$("head").append($("<link id='fcs-ranks' rel='stylesheet' type='text/css' href='"+fcs.ranks_css+"'>"));
 		// Initating script's element as they cannot be reached until created
 		fcs.items.script = {
 			"menu": $("#fcs-menu")[0],
@@ -264,13 +283,17 @@ function init(kill) {
 				}
 			}
 		}
-		// Coloring the items as they should be (active or inactive)
+		// Setting the items as they should be (active or inactive)
 		$.each($("#fcs-menu li"), function(i, elm){
 			if (fcs.user.settings[elm.id]) {
 				fcs.paintGreen($("#" + elm.id));
 				fcs[elm.id]();
 			} else fcs.paintOrange($("#" + elm.id));
 		});
+		if (fcs.user.settings.customBGURL !== "") {
+			$(".backstretch img").attr("src", fcs.user.settings.customBGURL);
+			fcs.paintGreen($("#changeBG"));
+		}
 		// ##### [Event Handlers] #####
 		// menu's slide
 		$("#fcs-logo").on("click", "button", function(){
@@ -303,6 +326,7 @@ function init(kill) {
 					else fcs.paintOrange($(this));
 					fcs.smallChat();
 				break;
+				case "changeBG":fcs.changeBG();break;
 				case "importPlaylists":fcs.confirmQuit();break;
 				case "confirmQuit":
 					settings.confirmQuit = !settings.confirmQuit;
@@ -329,7 +353,6 @@ function init(kill) {
 		// Removing core elements
 		$("#fcs-logo").remove();
 		$("#fcs-css").remove();
-		$("#clearChat").remove();
 		// Unbinding Event Handlers
 		$("#fcs-logo").off();
 		$("#fcs-menu").off();
