@@ -7,7 +7,7 @@
 
 if(!$("#fcs-css")[0]) {
 	var fcs = {
-		"version": "Alpha 0.5",
+		"version": "Alpha 0.6",
 		"menu_css": "https://rawgit.com/WiBla/FCS/master/ressources/menu.css",
 		"ranks_css": "https://rawgit.com/WiBla/FCS/master/ranks/ranks.css",
 		"theme_css": "https://rawgit.com/WiBla/FCS/master/ressources/blue.css",
@@ -24,8 +24,13 @@ if(!$("#fcs-css")[0]) {
 			"type": "",
 			"url": "",
 			"background": $(".backstretch img").attr("src"),
-			"DJ": "",
-			"audience": {}
+			"audience": {
+				"admins": [],
+				"creator": "",
+				"mods": [],
+				"users": [],
+				"DJ": ""
+			}
 		},
 		"user": {
 			"name": $('.user-info-button span')[0].innerHTML,
@@ -70,22 +75,27 @@ if(!$("#fcs-css")[0]) {
 			}
 			$("#chat .chat-container .chat-main").append($(
 				'<li class="fcs-'+type+' user-55ffc26f1564a403003f527e">\
-				<div class="stream-item-content">\
-					<div class="image_row">\
-						<img src="https://api.dubtrack.fm/user/55ffc26f1564a403003f527e/image" alt="wibla" onclick="Dubtrack.helpers.displayUser(\'55ffc26f1564a403003f527e\', this);" class="cursor-pointer" onerror="Dubtrack.helpers.image.imageError(this);">\
+					<div class="stream-item-content">\
+						<div class="chatDelete" onclick="$(this).closest(\'li\').remove();"><span class="icon-close"></span></div>\
+						<div class="image_row">\
+							<img src="https://api.dubtrack.fm/user/55ffc26f1564a403003f527e/image" alt="wibla" onclick="Dubtrack.helpers.displayUser(\'55ffc26f1564a403003f527e\', this);" class="cursor-pointer" onerror="Dubtrack.helpers.image.imageError(this);">\
+						</div>\
+						<div class="activity-row">\
+							<div class="text"><p><a href="#" class="username">[FCS] </a>'+msg+'</p></div>\
+							<div class="meta-info">\
+								<span class="username">WiBla </span>\
+								<i class="icon-dot"></i>\
+								<span class="timeinfo">\
+									<time class="timeago" datetime="undefined" title="Creator\'s website"><a target="_blank"href="http://wibla.free.fr/FCS/">http://wibla.free.fr</a></time>\
+								</span>\
+							</div>\
+						</div>\
 					</div>\
-					<div class="activity-row">\
-						<div class="text"><p><a href="#" class="username">[FCS] </a>'+msg+'</p>\
-					</div>\
-					<div class="meta-info">\
-						<span class="username">wibla </span>\
-						<i class="icon-dot"></i>\
-						<span class="timeinfo">\
-							<time class="timeago" datetime="undefined" title="Creator\'s website"><a target="_blank"href="http://wibla.free.fr">http://wibla.free.fr</a></time>\
-						</span>\
-					</div></div></div></li>'));
+				</li>'));
 		},
 		"sendChat": function(msg) {
+			// I know, this is hideous, but it works for now.
+			// Will be updated soon.
 			if (typeof msg == "string" && msg.length > 0) {
 				$("#chat-txt-message").val(msg);
 				$(".pusher-chat-widget-send-btn").click();
@@ -120,12 +130,49 @@ if(!$("#fcs-css")[0]) {
 			return parseInt($(".volume .ui-slider-handle")[0].style.left);
 		},
 		"setVolume": function() {},
+		"getAudience": function() {
+			// Does not work fully ATM
+			var room = {"admins": [],"creator": "","mods": [],"users": [],"DJ": ""};
+			for (var i = 0; i < $(".avatar-list li").length; i++) {
+				if ($($(".avatar-list li")[i]).hasClass("admin")) room.admins.push($($(".avatar-list li")[i])[0]);
+				else if ($($(".avatar-list li")[i]).hasClass("creator")) room.creator = $($(".avatar-list li")[i])[0];
+				else if ($($(".avatar-list li")[i]).hasClass("mod")) room.mods.push($($(".avatar-list li")[i])[0]);
+				else if ($($(".avatar-list li")[i]).hasClass("currentDJ")) room.DJ = $($(".avatar-list li")[i])[0];
+				else room.users.push($($(".avatar-list li")[i])[0]);
+			}
+			/*for (var j = 0; j < room.length; j++) {
+				if (room[j].length === 0 || room[j] === "") room[j] = null;
+			}*/
+			fcs.room.audience = room;
+			return room;
+		},
+		"getAdmins": function() {},
+		"getCreator": function() {},
+		"getStaff": function() {},
+		"getDJ": function() {},
+		"getUsers": function() {},
+		"getUser": function() {
+			return fcs.user;
+		},
+		"getETA": function() {
+			var eta = $(".queue-info")[0].innerText;
+			
+			if (eta === "") return null;
+			else {
+				eta = eta*4 + Math.ceil(fcs.getTimeRemaining()/60);
+				if (eta < 60) return [eta];
+				else {
+					var h = Math.ceil(eta/60), m = eta%60;
+					return [h, m];
+				}
+			}
+		},
 			// menu
 		"autoVote": function() {
 			if (fcs.user.settings.autoVote) {
 				var woot = fcs.items.dubUp,
 				meh = fcs.items.dubDown;
-				if (!woot.hasClass("voted") || !meh.hasClass("voted")) woot[0].click();
+				if (!woot.hasClass("voted") && !meh.hasClass("voted")) woot[0].click();
 				
 			} else if (typeof uInt !== "undefined") clearInterval(uInt);
 		},
@@ -205,6 +252,7 @@ if(!$("#fcs-css")[0]) {
 		},
 		"changeBG": function(){
 			// There is room for improvement (customize the prompt, avoid code repetition..)
+			// If the host change the default BG while the user is connected, it does not update fcs.room.background
 			var URL = prompt('URL of the wanted image:\n(Type "default" to reset room\'s background, "none" to have nothing)');
 			if (URL !== null && URL !== "") {
 				URL.toLowerCase();
@@ -248,13 +296,13 @@ function init(kill) {
 		$('<li id="fcs-logo">\
 				<button id="fcs-button">FCS</button>\
 				<ul id="fcs-menu" style="display: none;">\
-					<li id="autoVote">Auto-Vote</li>\
-					<li id="theme">Theme</li>\
-					<li id="smallChat">Small chat</li>\
+					<li class="off" id="autoVote">Auto-Vote</li>\
+					<li class="off" id="theme">Theme</li>\
+					<li class="off" id="smallChat">Small chat</li>\
 					<li id="changeBG">Change Background</li>\
 					<input id="importPlaylists" type="file">\
-					<li id="importPlaylists">Import Playlist</li>\
-					<li id="confirmQuit">Confirm on quit</li>\
+					<li class="off" id="importPlaylists">Import Playlist</li>\
+					<li class="off" id="confirmQuit">Confirm on quit</li>\
 					<li id="kill">Shutdown</li>\
 					<li id="undefined">'+fcs.version+'</li>\
 				</ul>\
@@ -288,7 +336,7 @@ function init(kill) {
 			if (fcs.user.settings[elm.id]) {
 				fcs.paintGreen($("#" + elm.id));
 				fcs[elm.id]();
-			} else fcs.paintOrange($("#" + elm.id));
+			}
 		});
 		if (fcs.user.settings.customBGURL !== "") {
 			$(".backstretch img").attr("src", fcs.user.settings.customBGURL);
@@ -350,9 +398,8 @@ function init(kill) {
 		localStorage.setItem("fcs-settings", JSON.stringify(fcs.user.settings)); // Just in case something has gone wrong
 		// inversing functions (if a function changes the DOM, invert-it to get the more basic dubtrack.fm possible)
 		clearInterval(window.uInt);
-		// Removing core elements
-		$("#fcs-logo").remove();
-		$("#fcs-css").remove();
+		// Removing elements
+		$("#fcs-logo, #fcs-css, #fcs-ranks, #fcs-theme-css, #fcs-smallChat-css").remove();
 		// Unbinding Event Handlers
 		$("#fcs-logo").off();
 		$("#fcs-menu").off();

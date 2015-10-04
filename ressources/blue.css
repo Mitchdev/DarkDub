@@ -222,7 +222,8 @@ ul.avatar-list li p.dubs {
 #profileMainSection .profileView .infoProfile h2 span.editUsername,
 #profileMainSection .profileView .infoProfile h2 span.saveUsername,
 #profileMainSection .profileView .contentMainProfile span.progress,
-#header-global .user-info .user-header-menu li.user-messages span.message-counter {
+#header-global .user-info .user-header-menu li.user-messages span.message-counter,
+#chat #new-messages-counter {
   background: linear-gradient(hsl(210,80%,40%), hsl(210,80%,30%));
   background-color: transparent !important;
 }

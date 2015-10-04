@@ -1,25 +1,25 @@
 /* ##### [RANKS] #####*/
 /* Room's ranks */
 .is-Creator {
-	
+  
 }
 .is-Helpers {
-	
+  
 }
 .is-Graphist {
-	
+  
 }
 .is-Bot {
-	
+  
 }
 .is-VIP {
-	font-weight: bold;
+  font-weight: bold;
 }
 .is-Donators {
-	
+  
 }
 
-/* VIP's ranks */
+/* VIP's rank */
 #chat .user-55ffc26f1564a403003f527e .username {
   /*WiBla*/
   color: hsl(200,80%,50%) !important;
@@ -48,6 +48,11 @@
 #chat .user-5601b47a6ac261030001e429 .username {
   /*Elaaps*/
   color: #40F !important;
+  font-weight: bold;
+}
+#chat .user-560c4f735df6020300ce1e53 .username {
+  /*Zephyr*/
+  color: rgb(207,169,102) !important;
   font-weight: bold;
 }
 #chat .user-5600f5ce2d5038030094cb21 .username {
