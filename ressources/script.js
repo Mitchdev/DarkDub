@@ -7,7 +7,7 @@
 
 if(!$("#fcs-css")[0]) {
 	var fcs = {
-		"version": "Alpha 0.6",
+		"version": "Alpha 0.7",
 		"menu_css": "https://rawgit.com/WiBla/FCS/master/ressources/menu.css",
 		"ranks_css": "https://rawgit.com/WiBla/FCS/master/ranks/ranks.css",
 		"theme_css": "https://rawgit.com/WiBla/FCS/master/ressources/blue.css",
@@ -278,6 +278,11 @@ if(!$("#fcs-css")[0]) {
 				};
 			} else window.onbeforeunload = "";
 		},
+		"reload": function() {
+			if (fcs.kill() === "done") {
+				setTimeout(function(){$.getScript("https://rawgit.com/WiBla/FCS/master/ressources/script.js");}, 1000);
+			}
+		},
 		"kill": function() {
 			if (init(true)) return "done";
 			else fcs.log("Could not reload/shutdown"); console.log("[FCS] Could not reload/shutdown");
@@ -285,9 +290,7 @@ if(!$("#fcs-css")[0]) {
 	};
 	
 	init();
-} else if (fcs.kill() === "done") {
-	setTimeout(function(){$.getScript("https://rawgit.com/WiBla/FCS/master/ressources/script.js");}, 1000);
-}
+} else fcs.reload();
 
 function init(kill) {
 	if (!kill) {
@@ -303,6 +306,7 @@ function init(kill) {
 					<input id="importPlaylists" type="file">\
 					<li class="off" id="importPlaylists">Import Playlist</li>\
 					<li class="off" id="confirmQuit">Confirm on quit</li>\
+					<li id="reload">Reload</li>\
 					<li id="kill">Shutdown</li>\
 					<li id="undefined">'+fcs.version+'</li>\
 				</ul>\
@@ -382,6 +386,7 @@ function init(kill) {
 					else fcs.paintOrange($(this));
 					fcs.confirmQuit();
 				break;
+				case "reload":fcs.reload();break;
 				case "kill":fcs.kill();break;
 				case "undefined":break;
 				
