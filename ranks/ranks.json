@@ -1,24 +1,24 @@
 {
-	"Creator": {
-		"WiBla": "55ffc26f1564a403003f527e"
-	},
-	"Helpers": {
-		"Zurbo": "5600800e239f1303009c90eb"
-	},
-	"Graphist": {
-		"Bil_Balle": ""
-	},
-	"Bot": {
-		"jarvis": "5601923c6ac261030001d63d"
-	},
-	"VIP": {
-		"Cyril": "560072ca239f1303009c8edf",
-		"Nomyn": "55ffb4d4196f170300cc0df1",
-		"ProDjMX": "56006fe7239f1303009c8e6e",
-		"Zephyr": "560c4f735df6020300ce1e53",
-		"Reality": "user-5600f5ce2d5038030094cb21"
-	},
-	"Donators": {
-		"": ""
-	}
+  "Creator": {
+    "WiBla": "55ffc26f1564a403003f527e"
+  },
+  "Helpers": {
+    "Zurbo": "5600800e239f1303009c90eb"
+  },
+  "Graphist": {
+    "Bil_Balle": ""
+  },
+  "Bot": {
+    "jarvis": "5601923c6ac261030001d63d"
+  },
+  "VIP": {
+    "Cyril": "560072ca239f1303009c8edf",
+    "Nomyn": "55ffb4d4196f170300cc0df1",
+    "ProDjMX": "56006fe7239f1303009c8e6e",
+    "Zephyr": "560c4f735df6020300ce1e53",
+    "Reality": "user-5600f5ce2d5038030094cb21"
+  },
+  "Donators": {
+    "": ""
+  }
 }
