@@ -41,10 +41,14 @@ input:focus {
   color: hsl(280,80%,60%) !important;
 }
 /* Global ranks */
-ul.avatar-list li.admin:after {color: hsla(10,80%,40%,0.8);}
-ul.avatar-list li.creator:after {color: hsla(220,80%,50%,0.8);}
-ul.avatar-list li.mod:after {color: hsla(90,80%,30%,0.8);}
-ul.avatar-list li.currentDJ:after {color: hsla(270,70%,40%,0.8);}
+ul.avatar-list li.admin:after {color: hsl(0,100%,30%);}
+ul.avatar-list li.creator:after {color: hsl(200,80%,50%);}
+ul.avatar-list li.co-owner:after {color: hsl(210,80%,50%);}
+ul.avatar-list li.manager:after {color: hsl(270,50%,40%);}
+ul.avatar-list li.mod:after {color: hsl(90,80%,30%);}
+ul.avatar-list li.vip:after {color: hsl(40,80%,50%);}
+ul.avatar-list li.resident-dj:after {color: hsl(30,90%,40%);}
+ul.avatar-list li.currentDJ:after {color: hsl(90,80%,50%);}
 #chat .chat-container ul.chat-main li.current-chat-user .activity-row .text p a.username {color: hsl(20,70%,50%) !important;}
 /* ----[Generic]---- */
 a:focus {outline: 0;}
@@ -79,6 +83,7 @@ ul.avatar-list li .picture {
 #chat .timeago a {color: #aaa;}
 #chat .timeago a:hover {color: #0bf;text-shadow: 0 0 5px;}
 /* ----[User-Interface]---- */
+#header-global h1 span {display: none;}
 #header-global,
 #player-controller,
 #main_player .player_sharing,
@@ -214,7 +219,9 @@ ul.avatar-list li.currentDJ:after {
 #profileMainSection .profileView .infoProfile h2 span.saveUsername,
 #profileMainSection .profileView .contentMainProfile span.progress,
 #header-global .user-info .user-header-menu li.user-messages span.message-counter,
-#chat #new-messages-counter {
+#chat #new-messages-counter,
+#user_popover .global-actions a,
+#browser .sidebar #room-lock-queue {
   background: linear-gradient(hsl(210,80%,40%), hsl(210,80%,30%));
   background-color: transparent !important;
 }
@@ -226,7 +233,7 @@ button:hover {
 }
 #main-menu-right a.close-menu:hover ::before,
 #main-menu-left a.close-menu:hover ::before,
-#user_popover .actions a:hover {
+#user_popover .actions a:hover, {
   color: hsl(210,10%,10%) !important;
 }
 #main-menu-left a:hover {
@@ -250,7 +257,8 @@ button:hover {
 #main-menu-right a.close-menu span,
 #browser .browser-content-header .close,
 #browser span.title,
-#user_popover .actions a {
+#user_popover .actions a,
+#browser .pause-queue-browser-bth {
   color: hsl(210,80%,30%) !important;
 }
 #profileMainSection .profileView .rewindProfile {
@@ -264,7 +272,9 @@ button:hover {
 }
 #browser .browser-content-header .form a.active,
 #container-room-list .room-item.active-room,
-#container-room-list .room-item.userRoom {
+#container-room-list .room-item.userRoom,
+#browser .clear-queue-browser-bth,
+#browser .pause-queue-browser-bth {
   outline-color: hsl(210,80%,40%);
 }
 #container-room-list .room-item .description .name,
@@ -287,7 +297,8 @@ button:hover {
   color: hsl(90,50%,50%) !important;
 }
 /* ##### [Browser] ##### */
-#browser span.preview {
+#browser span.preview,
+#browser ul li .description b {
   color: hsl(210,80%,40%) !important;
 }
 #browser .browser-content,
