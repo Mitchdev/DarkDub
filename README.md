@@ -1,8 +1,13 @@
 #FCS
   
+[Twitter](https://twitter.com/WiBla7) |
+[Facebook](https://www.facebook.com/French-Community-Script-692389147527589/timeline/) |
+[Website](http://wibla.free.fr/FCS/) |
+[Dubtrack's FEDM room](https://www.dubtrack.fm/join/french-edm-community) |
+
 ## What is FCS ?  
 FCS is a script which aims to improve your general experience on dubtrack.fm  
-FCS is simple to use, fast to load and available for everyone[*1*].  
+FCS is simple to use, fast to load and available for everyone[**1**].  
 *Note to developers: FCS has it's own [API](http://wibla.free.fr/FCS/API.html).*  
   
 ## How to get FCS ?  
@@ -18,10 +23,7 @@ Enjoy your new way of navigating on dubtrack ;)
   
 ## Other Stuff
 I update this [page](http://wibla.free.fr/FCS/) often with sneak peak of next features and known bugs.  
-You also can follow me on Twitter [@WiBla7](https://twitter.com/WiBla7)  
   
-[*1*] If you want to translate the script in your language:  
+[**1**] If you want to translate the script in your language:  
 Fork the project and pull request a new JSON in [FCS/lang/](https://github.com/WiBla/FCS/tree/master/lang)  
 **Make sure you follow the standar syntax by copying an existing JSON file.** (Not ready yet.)  
-
-Come say hello in my [Dubtrack room](https://www.dubtrack.fm/join/french-edm-community).
