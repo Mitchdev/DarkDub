@@ -261,7 +261,8 @@ button:hover {
 #browser .pause-queue-browser-bth {
   color: hsl(210,80%,30%) !important;
 }
-#profileMainSection .profileView .rewindProfile {
+#profileMainSection .profileView .rewindProfile,
+#user_popover .actions a input {
   border-color: hsl(210,80%,40%);
 }
 #user_popover,

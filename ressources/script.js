@@ -5,9 +5,9 @@
 	or http://wibla.free.fr/FCS/
 */
 
-if(!$("#fcs-css")[0]) {
+if (typeof fcs === "undefined") {
 	var fcs = {
-		"version": "Alpha 0.7",
+		"version": "Alpha 0.8",
 		"menu_css": "https://rawgit.com/WiBla/FCS/master/ressources/menu.css",
 		"ranks_css": "https://rawgit.com/WiBla/FCS/master/ranks/ranks.css",
 		"theme_css": "https://rawgit.com/WiBla/FCS/master/ressources/blue.css",
@@ -16,8 +16,10 @@ if(!$("#fcs-css")[0]) {
 			"autoVote": false,
 			"theme": false,
 			"smallChat": false,
+			"smallHistory": false,
 			"confirmQuit": false,
-			"customBGURL": ""
+			"customBGURL": "",
+			"onlyShowMention": false
 		},
 		"room": {
 			"name": "",
@@ -26,30 +28,14 @@ if(!$("#fcs-css")[0]) {
 			"background": $(".backstretch img").attr("src"),
 			"audience": {
 				"admins": [],
-				"creator": "",
+				"creator": [],
 				"mods": [],
 				"users": [],
-				"DJ": ""
+				"DJ": []
 			}
 		},
 		"user": {
-			"name": $('.user-info-button span')[0].innerHTML,
-			"id": localStorage.getItem('sub-c-2b40f72a-6b59-11e3-ab46-02ee2ddab7feuuid'),
-			"image": $('.user-info-button .user-image img').attr('src'),
-			"vote": "",
-			"role": "",
-			"playlists": {
-				"": ""
-			},
 			"settings": {}
-		},
-		"events": {
-			"chat": function(){$(this).trigger("fcs:chat");},
-			"advance": function(){$(this).trigger("fcs:advance");},
-			"woot": function(){$(this).trigger("fcs:woot");},
-			"meh": function(){$(this).trigger("fcs:meh");},
-			"user_join": function(){$(this).trigger("fcs:user_join");},
-			"user_leave": function(){$(this).trigger("fcs:user_leave");}
 		},
 		"items": {
 			"script": {},
@@ -93,6 +79,50 @@ if(!$("#fcs-css")[0]) {
 					</div>\
 				</li>'));
 		},
+		/*"chatHandler": function(data) {
+			if (data.type == "chat-message") {
+				var msg = $(".chat-main li:last p:last")[0].innerHTML.split(" ");
+				for (var i = 0; i < msg.length; i++) {
+					if (msg[i][0] == ":") {
+						if (fcs.room.url == "/french-edm-community"){
+							switch (msg[i]) {
+								case ":obz:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":pls:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":rekt:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":hap:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":boobs:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":ripplug:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":monster:":
+									msg[i] = $('<img src="" alt="">')[0];
+								break;
+								case ":saucisson:":
+									msg[i] = $('<img src="" alt="">');
+								break;
+								default:
+							} 
+						}
+						switch (msg[i]) {
+							case ":facepalm:":
+								msg[i] = $('<img src="http://orig04.deviantart.net/2570/f/2008/358/e/7/facepalm_by_kynquinhe.gif" alt="facepalm">')[0];
+							break;
+						}
+						$(".chat-main li:last p:last")[0].innerHTML = msg.join(" ");
+					}
+				}
+			}
+		},*/
 		"sendChat": function(msg) {
 			// I know, this is hideous, but it works for now.
 			// Will be updated soon.
@@ -127,54 +157,125 @@ if(!$("#fcs-css")[0]) {
 			return ($(".min")[0].innerHTML*60) + parseInt($(".sec")[0].innerHTML);
 		},
 		"getVolume": function() {
-			return parseInt($(".volume .ui-slider-handle")[0].style.left);
+			return $("#volume-div").slider("option", "value");
 		},
-		"setVolume": function() {},
+		"setVolume": function(x) {
+			if (x <= 0) {
+				x = 0;
+				$("#vol-meter")[0].className = "muted";
+			} else if (x > 0 && x < 100) {
+				$("#vol-meter").removeClass("muted");
+			} else if (x >= 100) {
+				x = 100;
+			}
+			$("#volume-div").slider({value: x});
+			$("#vol-meter")[0].innerText = x+"";
+		},
 		"getAudience": function() {
-			// Does not work fully ATM
-			var room = {"admins": [],"creator": "","mods": [],"users": [],"DJ": ""};
+			var room = {"admins": [],"creator": [],"mods": [],"users": [],"DJ": []};
 			for (var i = 0; i < $(".avatar-list li").length; i++) {
 				if ($($(".avatar-list li")[i]).hasClass("admin")) room.admins.push($($(".avatar-list li")[i])[0]);
-				else if ($($(".avatar-list li")[i]).hasClass("creator")) room.creator = $($(".avatar-list li")[i])[0];
-				else if ($($(".avatar-list li")[i]).hasClass("mod")) room.mods.push($($(".avatar-list li")[i])[0]);
-				else if ($($(".avatar-list li")[i]).hasClass("currentDJ")) room.DJ = $($(".avatar-list li")[i])[0];
-				else room.users.push($($(".avatar-list li")[i])[0]);
+				if ($($(".avatar-list li")[i]).hasClass("creator")) room.creator.push($($(".avatar-list li")[i])[0]);
+				if ($($(".avatar-list li")[i]).hasClass("mod")) room.mods.push($($(".avatar-list li")[i])[0]);
+				if ($($(".avatar-list li")[i]).hasClass("currentDJ")) room.DJ.push($($(".avatar-list li")[i])[0]);
+				room.users.push($($(".avatar-list li")[i])[0]);
 			}
-			/*for (var j = 0; j < room.length; j++) {
+			for (var j = 0; j < room.length; j++) {
+				console.log(room[j]);
 				if (room[j].length === 0 || room[j] === "") room[j] = null;
-			}*/
+			}
 			fcs.room.audience = room;
 			return room;
 		},
-		"getAdmins": function() {},
-		"getCreator": function() {},
-		"getStaff": function() {},
-		"getDJ": function() {},
-		"getUsers": function() {},
+		"getAdmins": function() {
+			fcs.getAudience();
+			return fcs.room.audience.admins;
+		},
+		"getCreator": function() {
+			fcs.getAudience();
+			return fcs.room.audience.creator;
+		},
+		"getStaff": function() {
+			fcs.getAudience();
+			return fcs.room.audience.mods;
+		},
+		"getDJ": function() {
+			fcs.getAudience();
+			return fcs.room.audience.DJ;
+		},
+		"getUsers": function() {
+			fcs.getAudience();
+			return fcs.room.audience.users;
+		},
 		"getUser": function() {
+			fcs.user = {
+				"id": Dubtrack.session.id,
+				"name": Dubtrack.session.attributes.username,
+				"created": Dubtrack.session.attributes.created,
+				"image": "",
+				"roleid": Dubtrack.session.attributes.roleid,
+				"status": Dubtrack.session.attributes.status,
+				"dubs": Dubtrack.session.attributes.dubs,
+				"vote": "",
+				"locale": Dubtrack.session.attributes.userInfo.locale,
+				"playlists": {
+					"": ""
+				},
+				"settings": JSON.parse(localStorage.getItem("fcs-settings"))
+			};
 			return fcs.user;
+		},
+		"getUserByName": function(name) {
+			$.ajax({
+				type: "GET",
+				url: "https://api.dubtrack.fm/user/" + name,
+				success: function(data) {
+					data = data.data; // make things more readable
+					return {
+						"id": data._id,
+						"name": data.username,
+						"created": data.created,
+						"image": data.image,
+						"roleid": data.roleid,
+						"status": data.status,
+						"dubs": data.dubs,
+						"vote": data.vote
+					};
+				},
+				error: function() {return null;}
+			});
 		},
 		"getETA": function() {
 			var eta = $(".queue-info")[0].innerText;
 			
-			if (eta === "") return null;
+			// Between two DJ, currentDJ innerHTML is not accessible
+			if ($(".currentDJ .username")[0].innerHTML == fcs.getUser().name) return "is DJing";
+			else if (eta === "") return null;
 			else {
-				eta = eta*4 + Math.ceil(fcs.getTimeRemaining()/60);
-				if (eta < 60) return [eta];
+				eta = (eta-1)*4 + Math.round(fcs.getTimeRemaining()/60);
+				if (eta < 60) return eta;
 				else {
-					var h = Math.ceil(eta/60), m = eta%60;
+					var h = Math.round(eta/60), m = eta%60;
 					return [h, m];
 				}
+			}
+		},
+		"scrollSongName": function() {
+			var text = $(".currentSong")[0].innerHTML;
+			if ($(".currentSong").height() > 17 && $(".currentSong")[0].nodeName == "SPAN") {
+				window.currentSongStyle = $(".infoContainer").attr("style");
+				$(".currentSong").replaceWith($("<marquee class='currentSong' scrollamount='3' scrolldelay='70'>"+text+"</marquee>"));
+				$(".infoContainer").attr("style", window.currentSongStyle + "padding-left: 5px;padding-right: 50px;");
+			} else {
+				$(".currentSong").replaceWith($("<span class='currentSong'>"+text+"</span>"));
+				$(".infoContainer").attr("style", window.currentSongStyle);
 			}
 		},
 			// menu
 		"autoVote": function() {
 			if (fcs.user.settings.autoVote) {
-				var woot = fcs.items.dubUp,
-				meh = fcs.items.dubDown;
-				if (!woot.hasClass("voted") && !meh.hasClass("voted")) woot[0].click();
-				
-			} else if (typeof uInt !== "undefined") clearInterval(uInt);
+				if (!fcs.items.dubUp.hasClass("voted") && !fcs.items.dubDown.hasClass("voted")) fcs.items.dubUp[0].click();
+			}
 		},
 		"theme": function(){
 			if (fcs.user.settings.theme) {
@@ -188,6 +289,23 @@ if(!$("#fcs-css")[0]) {
 				$("head").append($("<link id='fcs-smallChat-css' rel='stylesheet' type='text/css' href='"+fcs.smallChat_css+"'>"));
 			} else {
 				$("#fcs-smallChat-css").remove();
+			}
+		},
+		"smallHistory": function(){
+			if (fcs.user.settings.smallHistory) {
+				$("head").append($("<style id='fcs-smallHistoty-css'>\
+					#browser .nano ul li {padding: 0 !important;}\
+					#browser .nano ul li figure,\
+					#browser .nano ul li figure img {display: none !important;}\
+					#browser .nano ul li .description {margin: 0 !important;}\
+					#browser .nano ul li .description h2 {margin: 0 0 0 45px !important;}\
+					#browser .nano ul li .description p {margin: 0 !important;}\
+					#browser .nano ul li .description b {font-weight: normal !important; color: hsl(200,80%,50%);}\
+					#browser .nano ul li .actions {top: 5px !important;}\
+					#browser .nano ul li .actions span {margin: 0 !important;}\
+				</style>"));
+			} else {
+				$("#fcs-smallHistoty-css").remove();
 			}
 		},
 		"importPlaylists": function(){
@@ -224,7 +342,7 @@ if(!$("#fcs-css")[0]) {
 			
 			f.onchange = function() {
 				var file = f.files[0],
-				    fr = new FileReader();
+						fr = new FileReader();
 				
 				fr.onerror = function() {fcs.log("An error occured, please try again.", "error");};
 				fr.onload = function() {
@@ -284,7 +402,7 @@ if(!$("#fcs-css")[0]) {
 			}
 		},
 		"kill": function() {
-			if (init(true)) return "done";
+			if (init(true)) {fcs=undefined; return "done";}
 			else fcs.log("Could not reload/shutdown"); console.log("[FCS] Could not reload/shutdown");
 		}
 	};
@@ -294,7 +412,10 @@ if(!$("#fcs-css")[0]) {
 
 function init(kill) {
 	if (!kill) {
-		// Loading script's core elements
+		// Initating custom css
+		$("head").append($("<link id='fcs-css' rel='stylesheet' type='text/css' href='"+fcs.menu_css+"'>"));
+		$("head").append($("<link id='fcs-ranks' rel='stylesheet' type='text/css' href='"+fcs.ranks_css+"'>"));
+		// Creating script's core elements
 		$("#header-global .user-info ul > li.user-messages").before(
 		$('<li id="fcs-logo">\
 				<button id="fcs-button">FCS</button>\
@@ -302,6 +423,7 @@ function init(kill) {
 					<li class="off" id="autoVote">Auto-Vote</li>\
 					<li class="off" id="theme">Theme</li>\
 					<li class="off" id="smallChat">Small chat</li>\
+					<li class="off" id="smallHistory">Small history</li>\
 					<li id="changeBG">Change Background</li>\
 					<input id="importPlaylists" type="file">\
 					<li class="off" id="importPlaylists">Import Playlist</li>\
@@ -311,12 +433,19 @@ function init(kill) {
 					<li id="undefined">'+fcs.version+'</li>\
 				</ul>\
 			</li>'));
-		// Initating custom css
-		$("head").append($("<link id='fcs-css' rel='stylesheet' type='text/css' href='"+fcs.menu_css+"'>"));
-		$("head").append($("<link id='fcs-ranks' rel='stylesheet' type='text/css' href='"+fcs.ranks_css+"'>"));
+		// Creating other defaults elements
+		$(".chat_tools .chatSound").after($("<a href='#' id='mentionOnly'>@</a>"));
+		$("#volume-div").after($('<span id="vol-meter">0</span>'));
 		// Initating script's element as they cannot be reached until created
 		fcs.items.script = {
-			"menu": $("#fcs-menu")[0],
+			"logo": $("#fcs-logo"),
+			"menu": $("#fcs-menu"),
+			"fcs-css": $("#fcs-css"),
+			"ranks-css": $("#fcs-ranks"),
+			"theme-css": $("#fcs-theme-css"),
+			"smallChat-css": $("#fcs-smallChat-css"),
+			"@": $("#mentionOnly"),
+			"volume-meter": $("#vol-meter")
 		};
 		// Getting settings
 		if (!localStorage.getItem("fcs-settings")) {
@@ -349,7 +478,7 @@ function init(kill) {
 		// ##### [Event Handlers] #####
 		// menu's slide
 		$("#fcs-logo").on("click", "button", function(){
-			var menu = fcs.items.script.menu;
+			var menu = fcs.items.script.menu[0];
 			if (menu.style.display === "none") {
 				menu.style.display = "block";
 			} else {
@@ -378,6 +507,12 @@ function init(kill) {
 					else fcs.paintOrange($(this));
 					fcs.smallChat();
 				break;
+				case "smallHistory":
+					settings.smallHistory = !settings.smallHistory;
+					if (settings.smallHistory) fcs.paintGreen($(this));
+					else fcs.paintOrange($(this));
+					fcs.smallHistory();
+				break;
 				case "changeBG":fcs.changeBG();break;
 				case "importPlaylists":fcs.confirmQuit();break;
 				case "confirmQuit":
@@ -390,22 +525,49 @@ function init(kill) {
 				case "kill":fcs.kill();break;
 				case "undefined":break;
 				
-				default: console.error("[FCS] unrecognised menu item.");
+				default: console.error("[FCS] unrecognised menu item: " + $(this)[0].id);
 			}
 			localStorage.setItem("fcs-settings", JSON.stringify(settings));
 		});
-		window.uInt = setInterval(fcs.autoVote, 1000); //this will be way better in the next update
-		fcs.importPlaylists();
-		
+		$("#mentionOnly").on("click", function() {
+			fcs.user.settings.onlyShowMention = !fcs.user.settings.onlyShowMention;
+			if (fcs.user.settings.onlyShowMention) {
+				$("#mentionOnly")[0].style.color = "#fff";
+				$("head").append($('<style id="fcs-mention-only" type="text/css">\
+						#chat .chat-container ul li {display: none !important;}\
+						#chat .chat-container ul li[style="box-shadow: rgb(255, 0, 255) -4px 0px 0px 0px inset;"] {display: block !important;}\
+					</style>'));
+			} else {
+				$("#mentionOnly")[0].style.color = "#aaa";
+				$("#fcs-mention-only").remove();
+			}
+		});
+		$("#vol-meter").on("click", function(){
+			if (fcs.getVolume() !== 0) fcs.settings.volume = fcs.getVolume();
+			$("#vol-meter").toggleClass("muted");
+			if ($("#vol-meter").hasClass("muted")) fcs.setVolume(0);
+			else fcs.setVolume(fcs.settings.volume);
+		});
+		//Dubtrack.Events.on("realtime:chat-message", fcs.chatHandler);
+		Dubtrack.Events.on("realtime:room_playlist-update", fcs.autoVote);
+		Dubtrack.Events.on("realtime:room_playlist-update", fcs.scrollSongName);
+		fcs.getUser(); fcs.importPlaylists(); fcs.scrollSongName();
+		window.onresize = fcs.scrollSongName; // auto-update if songName should scroll or not
+		$(".volume, .left_section").bind("mousewheel", function(e){
+			if (e.originalEvent.wheelDelta /120 > 0) fcs.setVolume(fcs.getVolume() + 5);
+			else fcs.setVolume(fcs.getVolume() - 5);
+		});
 		fcs.log(fcs.autoComplete("$version loaded !"), "log");
 	} else {
 		// Saving settings
 		localStorage.setItem("fcs-settings", JSON.stringify(fcs.user.settings)); // Just in case something has gone wrong
 		// inversing functions (if a function changes the DOM, invert-it to get the more basic dubtrack.fm possible)
-		clearInterval(window.uInt);
 		// Removing elements
-		$("#fcs-logo, #fcs-css, #fcs-ranks, #fcs-theme-css, #fcs-smallChat-css").remove();
+		for (var item in fcs.items.script) {
+			if (typeof fcs.items.script[item][0] !== "undefined") fcs.items.script[item].remove();
+		}
 		// Unbinding Event Handlers
+		Dubtrack.Events.off();
 		$("#fcs-logo").off();
 		$("#fcs-menu").off();
 		$(".chat-main").off();
