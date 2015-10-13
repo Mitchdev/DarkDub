@@ -1,13 +1,13 @@
 /*
-	FCS French Community Script made by WiBla
-	Stay updated about the releases and much more on twitter @WiBla7
-	For any informations, please go to https://github.com/WiBla/FCS/
-	or http://wibla.free.fr/FCS/
+  FCS French Community Script made by WiBla
+  Stay updated about the releases and much more on twitter @WiBla7
+  For any informations, please go to https://github.com/WiBla/FCS/
+  or http://wibla.free.fr/FCS/
 */
 
 if (typeof fcs === "undefined") {
 	var fcs = {
-		"version": "Alpha 0.8",
+		"version": "Alpha 0.8.1",
 		"menu_css": "https://rawgit.com/WiBla/FCS/master/ressources/menu.css",
 		"ranks_css": "https://rawgit.com/WiBla/FCS/master/ranks/ranks.css",
 		"theme_css": "https://rawgit.com/WiBla/FCS/master/ressources/blue.css",
@@ -124,8 +124,7 @@ if (typeof fcs === "undefined") {
 			}
 		},*/
 		"sendChat": function(msg) {
-			// I know, this is hideous, but it works for now.
-			// Will be updated soon.
+			// Ajax does not let you see your own messages
 			if (typeof msg == "string" && msg.length > 0) {
 				$("#chat-txt-message").val(msg);
 				$(".pusher-chat-widget-send-btn").click();
@@ -147,12 +146,8 @@ if (typeof fcs === "undefined") {
 			}
 			return txt.join(" ");
 		},
-		"paintGreen": function(e) {
-			e[0].className = "on";
-		},
-		"paintOrange": function(e) {
-			e[0].className = "off";
-		},
+		"paintGreen": function(e) {e[0].className = "on";},
+		"paintOrange": function(e) {e[0].className = "off";},
 		"getTimeRemaining": function() {
 			return ($(".min")[0].innerHTML*60) + parseInt($(".sec")[0].innerHTML);
 		},
@@ -263,12 +258,10 @@ if (typeof fcs === "undefined") {
 		"scrollSongName": function() {
 			var text = $(".currentSong")[0].innerHTML;
 			if ($(".currentSong").height() > 17 && $(".currentSong")[0].nodeName == "SPAN") {
-				window.currentSongStyle = $(".infoContainer").attr("style");
 				$(".currentSong").replaceWith($("<marquee class='currentSong' scrollamount='3' scrolldelay='70'>"+text+"</marquee>"));
-				$(".infoContainer").attr("style", window.currentSongStyle + "padding-left: 5px;padding-right: 50px;");
-			} else {
+				$(".infoContainer").attr("style", "padding-left: 5px;padding-right: 50px;");
+			} else if ($(".currentSong")[0].nodeName == "MARQUEE") {
 				$(".currentSong").replaceWith($("<span class='currentSong'>"+text+"</span>"));
-				$(".infoContainer").attr("style", window.currentSongStyle);
 			}
 		},
 			// menu
@@ -294,15 +287,25 @@ if (typeof fcs === "undefined") {
 		"smallHistory": function(){
 			if (fcs.user.settings.smallHistory) {
 				$("head").append($("<style id='fcs-smallHistoty-css'>\
-					#browser .nano ul li {padding: 0 !important;}\
+					#browser .nano ul li,\
+					#browser .nano ul li .description,\
+					#browser .nano ul li .description p,\
+					#browser .nano ul li .actions span,\
+					#browser .nano ul li .actions a\
+					{padding: 0 !important; margin: 0 !important;}\
 					#browser .nano ul li figure,\
-					#browser .nano ul li figure img {display: none !important;}\
-					#browser .nano ul li .description {margin: 0 !important;}\
+					#browser .nano ul li figure img\
+					{display: none !important;}\
+					#browser .nano ul li .actions a,\
+					#browser .nano ul li .actions span\
+					{width: 30px; height: 30px;}\
 					#browser .nano ul li .description h2 {margin: 0 0 0 45px !important;}\
-					#browser .nano ul li .description p {margin: 0 !important;}\
-					#browser .nano ul li .description b {font-weight: normal !important; color: hsl(200,80%,50%);}\
+					#browser .nano ul li .description b {font-weight: normal !important; color: hsl(20080%,50%);}\
 					#browser .nano ul li .actions {top: 5px !important;}\
-					#browser .nano ul li .actions span {margin: 0 !important;}\
+					#browser .nano ul li .actions a {color: transparent !important;}\
+					#browser .nano ul li .actions span {margin: 0px !important;}\
+					#browser .nano ul li .actions span:before {color: #aaa !important;}\
+					#browser .nano ul li .timeDisplay {top: 0 !important; bottom: auto !important;}\
 				</style>"));
 			} else {
 				$("#fcs-smallHistoty-css").remove();
@@ -310,8 +313,7 @@ if (typeof fcs === "undefined") {
 		},
 		"importPlaylists": function(){
 			// Playlist Import init
-			
-			var i, 
+			var i,
 				key,
 				keys,
 				PL = {},
@@ -342,7 +344,7 @@ if (typeof fcs === "undefined") {
 			
 			f.onchange = function() {
 				var file = f.files[0],
-						fr = new FileReader();
+				    fr = new FileReader();
 				
 				fr.onerror = function() {fcs.log("An error occured, please try again.", "error");};
 				fr.onload = function() {
@@ -434,7 +436,7 @@ function init(kill) {
 				</ul>\
 			</li>'));
 		// Creating other defaults elements
-		$(".chat_tools .chatSound").after($("<a href='#' id='mentionOnly'>@</a>"));
+		//$(".chat_tools .chatSound").after($("<a href='#' id='mentionOnly'>@</a>"));
 		$("#volume-div").after($('<span id="vol-meter">0</span>'));
 		// Initating script's element as they cannot be reached until created
 		fcs.items.script = {
@@ -551,12 +553,13 @@ function init(kill) {
 		//Dubtrack.Events.on("realtime:chat-message", fcs.chatHandler);
 		Dubtrack.Events.on("realtime:room_playlist-update", fcs.autoVote);
 		Dubtrack.Events.on("realtime:room_playlist-update", fcs.scrollSongName);
-		fcs.getUser(); fcs.importPlaylists(); fcs.scrollSongName();
+		fcs.getUser(); fcs.importPlaylists(); fcs.scrollSongName(); fcs.setVolume(fcs.getVolume());
 		window.onresize = fcs.scrollSongName; // auto-update if songName should scroll or not
 		$(".volume, .left_section").bind("mousewheel", function(e){
-			if (e.originalEvent.wheelDelta /120 > 0) fcs.setVolume(fcs.getVolume() + 5);
+			if (e.originalEvent.wheelDelta > 0) fcs.setVolume(fcs.getVolume() + 5);
 			else fcs.setVolume(fcs.getVolume() - 5);
 		});
+		$(".volume").on("mouseup, mousemove", function(){fcs.setVolume(fcs.getVolume());});
 		fcs.log(fcs.autoComplete("$version loaded !"), "log");
 	} else {
 		// Saving settings
