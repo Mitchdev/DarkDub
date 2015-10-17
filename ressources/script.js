@@ -7,7 +7,7 @@
 
 if (typeof fcs === "undefined") {
 	var fcs = {
-		"version": "Alpha 0.8.1",
+		"version": "Alpha 0.8.2",
 		"menu_css": "https://rawgit.com/WiBla/FCS/master/ressources/menu.css",
 		"ranks_css": "https://rawgit.com/WiBla/FCS/master/ranks/ranks.css",
 		"theme_css": "https://rawgit.com/WiBla/FCS/master/ressources/blue.css",
@@ -84,35 +84,6 @@ if (typeof fcs === "undefined") {
 				var msg = $(".chat-main li:last p:last")[0].innerHTML.split(" ");
 				for (var i = 0; i < msg.length; i++) {
 					if (msg[i][0] == ":") {
-						if (fcs.room.url == "/french-edm-community"){
-							switch (msg[i]) {
-								case ":obz:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":pls:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":rekt:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":hap:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":boobs:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":ripplug:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":monster:":
-									msg[i] = $('<img src="" alt="">')[0];
-								break;
-								case ":saucisson:":
-									msg[i] = $('<img src="" alt="">');
-								break;
-								default:
-							} 
-						}
 						switch (msg[i]) {
 							case ":facepalm:":
 								msg[i] = $('<img src="http://orig04.deviantart.net/2570/f/2008/358/e/7/facepalm_by_kynquinhe.gif" alt="facepalm">')[0];
@@ -152,10 +123,11 @@ if (typeof fcs === "undefined") {
 			return ($(".min")[0].innerHTML*60) + parseInt($(".sec")[0].innerHTML);
 		},
 		"getVolume": function() {
-			return $("#volume-div").slider("option", "value");
+			return Math.round(Number($("#volume-div").slider("option", "value")));
 		},
 		"setVolume": function(x) {
-			if (x <= 0) {
+			if (isNaN(x)) return "Argument is NaN !";
+			else if (x <= 0) {
 				x = 0;
 				$("#vol-meter")[0].className = "muted";
 			} else if (x > 0 && x < 100) {
